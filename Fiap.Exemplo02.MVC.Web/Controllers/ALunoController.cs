@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using Fiap.Exemplo02.MVC.Web.Models;
 using System.Data.Entity;
 using Fiap.Exemplo02.MVC.Web.UnitsOfWork;
+using Fiap.Exemplo02.MVC.Web.ViewModels;
 
 namespace Fiap.Exemplo02.MVC.Web.Controllers
 {
@@ -18,16 +19,18 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
         #region GET
 
         [HttpGet]
-        public ActionResult Cadastrar()
+        public ActionResult Cadastrar(string msg)
         {
-            List<Grupo> grupos = (List<Grupo>)_unit.GrupoRepository.Listar();
-            ViewBag.grupos = new SelectList(grupos, "Id", "Nome");
+            AlunoViewModel viewModel = new AlunoViewModel()
+            {
+                Grupos = carregarGrupos(),
 
-            //
-            List<Professor> lista = (List<Professor>)_unit.ProfessorRepository.Listar();
-            ViewBag.professores = lista;
+                Professores = carregarProfessores(),
 
-            return View();
+                Mensagem = msg
+            };
+
+            return View(viewModel);
         }
 
         [HttpGet]
@@ -78,9 +81,18 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
 
         #region POST
         [HttpPost]
-        public ActionResult Cadastrar(Aluno aluno, int[] ProfessoresId)
+        public ActionResult Cadastrar(AlunoViewModel alunoViewModel)
         {
-            foreach(var id in ProfessoresId)
+            var aluno = new Aluno()
+            {
+                Nome = alunoViewModel.Nome,
+                DataNascimento = alunoViewModel.DataNascimento,
+                Bolsa = alunoViewModel.Bolsa,
+                GrupoId = alunoViewModel.GrupoId,
+                Desconto = alunoViewModel.Desconto
+            };
+
+            foreach (var id in alunoViewModel.ProfessoresId)
             {
                 Professor prof = _unit.ProfessorRepository.BuscarPorId(id);
                 aluno.Professor.Add(prof);
@@ -88,19 +100,11 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
 
             _unit.AlunoRepository.Cadastrar(aluno);
             _unit.Save();
-           
-            List<Grupo> grupos = (List<Grupo>)_unit.GrupoRepository.Listar();
-            ViewBag.grupos = new SelectList(grupos, "Id", "Nome");
 
-            //vou adicionar os options manualmente
-            List<Professor> lista = (List<Professor>)_unit.ProfessorRepository.Listar();
-            ViewBag.professores = lista;
-
-            ViewBag.msg = "Cadastrado com sucesso " + ProfessoresId.Count();
-            return View();
+            return RedirectToAction("Cadastrar", new { msg = "Aluno cadastrado" });
         }
 
-       
+
 
         [HttpPost]
         public ActionResult Excluir(int id)
@@ -111,7 +115,7 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
             return RedirectToAction("Listar");
         }
 
-       
+
 
         [HttpPost]
         public ActionResult Alterar(Aluno a)
@@ -145,6 +149,22 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
         {
             _unit.Dispose();
             base.Dispose(disposing);
+        }
+
+        #endregion
+
+        #region UTILS
+
+        private SelectList carregarGrupos()
+        {
+            List<Grupo> grupos = (List<Grupo>)_unit.GrupoRepository.Listar();
+            return new SelectList(grupos, "Id", "Nome");
+        }
+
+        private List<Professor> carregarProfessores()
+        {
+            List<Professor> lista = (List<Professor>)_unit.ProfessorRepository.Listar();
+            return lista;
         }
 
         #endregion
