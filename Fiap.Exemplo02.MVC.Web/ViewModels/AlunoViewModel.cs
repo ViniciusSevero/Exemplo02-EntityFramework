@@ -29,6 +29,8 @@ namespace Fiap.Exemplo02.MVC.Web.ViewModels
 
         //Setters
         public int Id { get; set; }
+        [StringLength(100)]
+        [Required(ErrorMessage = "Nome Obrigatório")]
         public string Nome { get; set; }
         public System.DateTime DataNascimento { get; set; }
         public bool Bolsa { get; set; }

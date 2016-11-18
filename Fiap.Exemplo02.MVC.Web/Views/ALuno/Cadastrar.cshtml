@@ -14,6 +14,8 @@
     </div>
 }
 
+@Html.ValidationSummary() <!-- Todas as mensagens -->
+
 @using (@Html.BeginForm())
 {
 
@@ -22,6 +24,7 @@
             <div class="form-group">
                 @Html.LabelFor(m => m.Nome)
                 @Html.TextBoxFor(m => m.Nome, new { @class = "form-control" }) <!--qualquer atributo do html, (arroba) é escape-->
+                @Html.ValidationMessageFor(m => m.Nome)
             </div>
         </div>
     </div>
@@ -30,6 +33,7 @@
             <div class="form-group">
                 @Html.LabelFor(m => m.DataNascimento)
                 @Html.TextBoxFor(m => m.DataNascimento, new { @class = "form-control" }) <!--qualquer atributo do html, (arroba) é escape-->
+                @Html.ValidationMessageFor(m => m.DataNascimento)
             </div>
         </div>
     </div>
@@ -61,6 +65,7 @@
             <div class="form-group">
                 @Html.CheckBoxFor(m => m.Bolsa) <!--qualquer atributo do html, (arroba) é escape-->
                 @Html.LabelFor(m => m.Bolsa)
+                @Html.ValidationMessageFor(m => m.Bolsa)
             </div>
         </div>
     </div>

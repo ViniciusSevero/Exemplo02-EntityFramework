@@ -52,38 +52,52 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
         [HttpGet]
         public ActionResult Alterar(int id)
         {
-            //SelectList
-            List<Grupo> grupos = (List<Grupo>)_unit.GrupoRepository.Listar();
-            ViewBag.grupos = new SelectList(grupos, "Id", "Nome");
 
             Aluno a = _unit.AlunoRepository.BuscarPorId(id);
-            return View(a);
+
+            int[] ProfessoresId = new int[a.Professor.Count];
+            for(int i = 0; i< a.Professor.Count; i++)
+            {
+                ProfessoresId[i] = a.Professor.ElementAt(i).Id;
+            }
+
+            AlunoViewModel viewModel = new AlunoViewModel()
+            {
+                Id = a.Id,
+                Bolsa = a.Bolsa,
+                DataNascimento = a.DataNascimento,
+                Desconto = a.Desconto,
+                GrupoId = a.GrupoId,
+                Nome = a.Nome,
+                ProfessoresId = ProfessoresId,
+
+
+                Grupos = carregarGrupos(),
+                Professores = carregarProfessores()
+
+            };
+
+            return View(viewModel);
         }
 
         [HttpGet]
-        public ActionResult Buscar(AlunoViewModel viewModel) //permite ser Null
+        public ActionResult Buscar(string nomeBusca, int? idBusca) //permite ser Null
         {
             List<Aluno> resultado = new List<Aluno>();
 
-            if (viewModel.idBusca == null)
-            {
-                //busca o aluno no banco por parte do nome
-                resultado = _unit.AlunoRepository.BuscarPor(a => a.Nome.Contains(viewModel.NomeBusca)).ToList();
-            }
-            else
-            {
-                //busca o aluno no banco por nome do grupo
-                resultado = _unit.AlunoRepository.BuscarPor(a => a.Grupo.Id == viewModel.idBusca && a.Nome.Contains(viewModel.NomeBusca)).ToList();
-            }
 
-            AlunoViewModel alunoViewModel2 = new AlunoViewModel()
+            resultado = _unit.AlunoRepository.BuscarPor(a => (a.Nome.Contains(nomeBusca) && a.GrupoId == idBusca)
+                                                        || (idBusca == null && a.Nome.Contains(nomeBusca))).ToList();
+
+
+            AlunoViewModel alunoViewModel = new AlunoViewModel()
             {
                 Alunos = resultado,
                 Grupos = carregarGrupos()
             };
 
             //passo direto para a view de listar e não para a action
-            return View(alunoViewModel2);
+            return View("Listar", alunoViewModel);
         }
 
         #endregion
@@ -92,25 +106,34 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
         [HttpPost]
         public ActionResult Cadastrar(AlunoViewModel alunoViewModel)
         {
-            var aluno = new Aluno()
+            if (ModelState.IsValid)
             {
-                Nome = alunoViewModel.Nome,
-                DataNascimento = alunoViewModel.DataNascimento,
-                Bolsa = alunoViewModel.Bolsa,
-                GrupoId = alunoViewModel.GrupoId,
-                Desconto = alunoViewModel.Desconto
-            };
+                var aluno = new Aluno()
+                {
+                    Nome = alunoViewModel.Nome,
+                    DataNascimento = alunoViewModel.DataNascimento,
+                    Bolsa = alunoViewModel.Bolsa,
+                    GrupoId = alunoViewModel.GrupoId,
+                    Desconto = alunoViewModel.Desconto
+                };
 
-            foreach (var id in alunoViewModel.ProfessoresId)
-            {
-                Professor prof = _unit.ProfessorRepository.BuscarPorId(id);
-                aluno.Professor.Add(prof);
+                foreach (var id in alunoViewModel.ProfessoresId)
+                {
+                    Professor prof = _unit.ProfessorRepository.BuscarPorId(id);
+                    aluno.Professor.Add(prof);
+                }
+
+                _unit.AlunoRepository.Cadastrar(aluno);
+                _unit.Save();
+
+                return RedirectToAction("Cadastrar", new { msg = "Aluno cadastrado" });
             }
-
-            _unit.AlunoRepository.Cadastrar(aluno);
-            _unit.Save();
-
-            return RedirectToAction("Cadastrar", new { msg = "Aluno cadastrado" });
+            else
+            {
+                alunoViewModel.Grupos = carregarGrupos();
+                alunoViewModel.Professores = carregarProfessores();
+                return View(alunoViewModel);
+            }
         }
 
 

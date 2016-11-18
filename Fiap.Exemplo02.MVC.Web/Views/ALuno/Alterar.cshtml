@@ -1,65 +1,79 @@
-﻿@using Fiap.Exemplo02.MVC.Web.Models
-@model Aluno
+﻿@using Fiap.Exemplo02.MVC.Web.ViewModels
+@model AlunoViewModel
 
 @{
     ViewBag.Title = "Alterar";
 }
 
-<h2>Editar Aluno</h2>
+<h2>Cadastrar Aluno</h2>
 
-@if (ViewBag.msg != null)
+@if (Model.Mensagem != null)
 {
     <div class="alert alert-success">
-        @ViewBag.msg
+        @Model.Mensagem
     </div>
 }
 
 @using (@Html.BeginForm())
 {
-    <!-- Já vai vir com os valores do model  -->
-
-    @Html.HiddenFor(a => a.Id);
+    @Html.HiddenFor(m => m.Id)
 
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                @Html.LabelFor(a => a.Nome)
-                @Html.TextBoxFor(a => a.Nome, new { @class = "form-control" }) <!--qualquer atributo do html, (arroba) é escape-->
+                @Html.LabelFor(m => m.Nome)
+                @Html.TextBoxFor(m => m.Nome, new { @class = "form-control" }) <!--qualquer atributo do html, (arroba) é escape-->
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                @Html.LabelFor(a => a.DataNascimento)
-                @Html.TextBoxFor(a => a.DataNascimento, new { @class = "form-control" }) <!--qualquer atributo do html, (arroba) é escape-->
+                @Html.LabelFor(m => m.DataNascimento)
+                @Html.TextBoxFor(m => m.DataNascimento, new { @class = "form-control" }) <!--qualquer atributo do html, (arroba) é escape-->
             </div>
         </div>
-    </div>
-    <div>
-        @Html.LabelFor(a => a.Grupo)
-        <!-- Primeira propriedade é onde ele vai setar o valor escolhido-->
-        @Html.DropDownListFor(a => a.GrupoId, ViewBag.grupos as SelectList, "Selecione", new { @class = "form-control" })
     </div>
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                @Html.CheckBoxFor(a => a.Bolsa) <!--qualquer atributo do html, (arroba) é escape-->
-                @Html.LabelFor(a => a.Bolsa)
+                @Html.LabelFor(m => m.GrupoId)
+                <!-- Primeira propriedade é onde ele vai setar o valor escolhido-->
+                @Html.DropDownListFor(m => m.GrupoId, Model.Grupos, "Selecione", new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Professores)
+                <select name="ProfessoresId" class="selectpicker" multiple>
+                    @foreach (var p in Model.Professores)
+                    {
+                        <option value="@p.Id">@p.Nome</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.CheckBoxFor(m => m.Bolsa) <!--qualquer atributo do html, (arroba) é escape-->
+                @Html.LabelFor(m => m.Bolsa)
             </div>
         </div>
     </div>
     <div class="row desconto">
         <div class="col-md-12">
             <div class="form-group">
-                @Html.LabelFor(a => a.Desconto)
-                @Html.TextBoxFor(a => a.Desconto, new { @class = "form-control" }) <!--qualquer atributo do html, (arroba) é escape-->
+                @Html.LabelFor(m => m.Desconto)
+                @Html.TextBoxFor(m => m.Desconto, new { @class = "form-control" }) <!--qualquer atributo do html, (arroba) é escape-->
             </div>
         </div>
     </div>
 
-    <input type="submit" value="Enviar" class="btn btn-primary" />
+    <input type="submit" value="Atualizar" class="btn btn-primary" />
 }
-
-
 
