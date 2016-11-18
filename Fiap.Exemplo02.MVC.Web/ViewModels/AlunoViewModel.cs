@@ -14,8 +14,15 @@ namespace Fiap.Exemplo02.MVC.Web.ViewModels
         public virtual ICollection<Professor> Professores { get; set; }
         public virtual SelectList Grupos { get; set; }
 
+        #region Lista properties
         //Listagem de Alunos
         public ICollection<Aluno> Alunos { get; set; }
+
+        public string NomeBusca { get; set; }
+
+        public int? idBusca { get; set; }
+
+        #endregion
 
         //MSG
         public string Mensagem{get;set;}

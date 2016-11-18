@@ -1,15 +1,15 @@
-﻿@model List<Fiap.Exemplo02.MVC.Web.Models.Aluno>
-
+﻿@using Fiap.Exemplo02.MVC.Web.ViewModels
+@model AlunoViewModel
 @{
     ViewBag.Title = "Listar";
 }
 
 <h2>Listar Alunos</h2>
 
-@if (TempData["msg"] != null)
+@if (Model.Mensagem != null)
 {
     <div class="alert alert-success">
-        @TempData["msg"]
+        Model.Mensagem
     </div>
 }
 
@@ -17,10 +17,10 @@
 {
     <div class="row">
         <div class="col-md-3">
-            @Html.TextBox("nomeBusca", "", new { @class = "form-control", placeholder = "Digite um nome" })
+            @Html.TextBoxFor(m => m.NomeBusca, "", new { @class = "form-control", placeholder = "Digite um nome" })
         </div>
         <div class="col-md-3">
-            @Html.DropDownList("idGrupo", ViewBag.grupos as SelectList, "Selecione um Grupo", new { @class = "form-control" })
+            @Html.DropDownListFor(m => m.idBusca, Model.Grupos, "Selecione um Grupo", new { @class = "form-control" })
         </div>
         <div class="col-md-3">
             <input type="submit" class="btn btn-primary" value="Buscar" />
@@ -40,7 +40,7 @@
     </tr>
 
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.Alunos)
     {
         <tr>
             <td>@item.Id</td>

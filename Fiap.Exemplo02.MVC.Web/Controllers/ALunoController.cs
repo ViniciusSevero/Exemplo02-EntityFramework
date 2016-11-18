@@ -36,12 +36,17 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
         [HttpGet]
         public ActionResult Listar()
         {
-            CarregarComboGrupo();
+
+            AlunoViewModel viewModel = new AlunoViewModel()
+            {
+                Alunos = _unit.AlunoRepository.Listar(),
+                Grupos = carregarGrupos()
+            };
+
 
             //include -> busca o relacionamento (preenche o grupo que o aluno possui), faz o join
             //var lista = ctx.Aluno.Include("Grupo").ToList();
-            var lista = _unit.AlunoRepository.Listar();
-            return View(lista);
+            return View(viewModel);
         }
 
         [HttpGet]
@@ -56,25 +61,29 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult Buscar(int? idGrupo, string nomeBusca) //permite ser Null
+        public ActionResult Buscar(AlunoViewModel viewModel) //permite ser Null
         {
             List<Aluno> resultado = new List<Aluno>();
 
-            if (idGrupo == null)
+            if (viewModel.idBusca == null)
             {
                 //busca o aluno no banco por parte do nome
-                resultado = _unit.AlunoRepository.BuscarPor(a => a.Nome.Contains(nomeBusca)).ToList();
+                resultado = _unit.AlunoRepository.BuscarPor(a => a.Nome.Contains(viewModel.NomeBusca)).ToList();
             }
             else
             {
                 //busca o aluno no banco por nome do grupo
-                resultado = _unit.AlunoRepository.BuscarPor(a => a.Grupo.Id == idGrupo && a.Nome.Contains(nomeBusca)).ToList();
+                resultado = _unit.AlunoRepository.BuscarPor(a => a.Grupo.Id == viewModel.idBusca && a.Nome.Contains(viewModel.NomeBusca)).ToList();
             }
 
-            CarregarComboGrupo();
+            AlunoViewModel alunoViewModel2 = new AlunoViewModel()
+            {
+                Alunos = resultado,
+                Grupos = carregarGrupos()
+            };
 
             //passo direto para a view de listar e não para a action
-            return View("Listar", resultado);
+            return View(alunoViewModel2);
         }
 
         #endregion
@@ -134,12 +143,6 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
 
         #region PRIVATE
 
-        private void CarregarComboGrupo()
-        {
-            //envia grupos para o select
-            List<Grupo> grupos = (List<Grupo>)_unit.GrupoRepository.Listar();
-            ViewBag.grupos = new SelectList(grupos, "Id", "Nome");
-        }
 
         #endregion
 
