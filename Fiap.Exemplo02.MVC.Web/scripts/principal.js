@@ -18,6 +18,8 @@
         size: 4
     });
 
+    $("#DataNascimento").datepicker();
+
 
 });
 

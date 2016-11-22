@@ -27,7 +27,9 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
 
                 Professores = carregarProfessores(),
 
-                Mensagem = msg
+                Mensagem = msg,
+
+                DataNascimento = DateTime.Now
             };
 
             return View(viewModel);
@@ -92,14 +94,13 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
                                                         || (idBusca == null && a.Nome.Contains(nomeBusca))).ToList();
 
 
-            AlunoViewModel alunoViewModel = new AlunoViewModel()
-            {
-                Alunos = resultado,
-                Grupos = carregarGrupos()
-            };
+         //   AlunoViewModel alunoViewModel = new AlunoViewModel()
+         //   {
+         //       Alunos = resultado,
+         //       Grupos = carregarGrupos()
+         //   };
 
-            //passo direto para a view de listar e não para a action
-            return View("Listar", alunoViewModel);
+            return PartialView("_tabela", resultado);
         }
 
         #endregion

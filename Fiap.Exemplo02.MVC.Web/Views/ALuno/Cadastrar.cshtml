@@ -32,7 +32,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 @Html.LabelFor(m => m.DataNascimento)
-                @Html.TextBoxFor(m => m.DataNascimento, new { @class = "form-control" }) <!--qualquer atributo do html, (arroba) é escape-->
+                @Html.TextBoxFor(m => m.DataNascimento, "{0:dd/MM/yyyy}", new { @class = "form-control" }) <!--qualquer atributo do html, (arroba) é escape-->
                 @Html.ValidationMessageFor(m => m.DataNascimento)
             </div>
         </div>

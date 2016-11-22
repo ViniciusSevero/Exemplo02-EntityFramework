@@ -13,7 +13,7 @@
     </div>
 }
 
-@using (Html.BeginForm("Buscar", "Aluno", FormMethod.Get, new { @class = "form-inline" }))
+@using (Ajax.BeginForm("Buscar", null, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "tabela" ,InsertionMode = InsertionMode.Replace}, new { @class = "form-inline" , id = "formBusca"}))
 {
     <div class="row">
         <div class="col-md-3">
@@ -28,7 +28,7 @@
     </div>
 }
 
-<table class="table">
+<table class="table" id="listaAlunos">
     <tr>
         <th>ID</th>
         <th>Nome</th>
@@ -39,25 +39,38 @@
         <th></th>
     </tr>
 
-
-    @foreach (var item in Model.Alunos)
-    {
-        <tr>
-            <td>@item.Id</td>
-            <td>@item.Nome</td>
-            <td>@item.DataNascimento</td>
-            <td>@(item.Bolsa?"Sim":"Não")</td>
-            <td>@item.Desconto</td>
-            <td>@item.Grupo.Nome</td>
-            <td>
-                <input type="button" value="Excluir" class="btn btn-danger" data-toggle="modal" data-target="#myModal" onclick="passarID(@item.Id)" />
-            </td>
-            <td>
-                @Html.ActionLink("Alterar", "Alterar", new { id = @item.Id }, new { @class = "btn btn-primary" })
-            </td>
-        </tr>
-    }
+    <tbody id="tabela">
+        @Html.Partial("_tabela", Model.Alunos)
+    </tbody>
+   
 </table>
 
-@Html.Partial("_ModalConfirmacao")
+@Html.Partial("_ModalConfirmacao", Model.Alunos)
 
+
+@section scripts
+{
+    <script>
+        //encapsular pq as novas linhas não tem esse comportamento
+        function someBotao() {
+            $("#listaAlunos tr td .btn").css("visibility", "hidden"); //mantém o espaço ocupado pelo elemento
+            $("#listaAlunos tr").hover(
+                function () {
+                    $(this).find("td .btn").css("visibility", "visible");
+                },
+                function () {
+                    $(this).find("td .btn").css("visibility", "hidden");
+                }
+            );
+        }
+
+        $(document).ready(function(){
+            $("#idBusca").change(function () {
+               //seleciona form e faz submit
+               $("#formBusca").submit();
+            });
+
+            someBotao();
+        });
+    </script>
+}
