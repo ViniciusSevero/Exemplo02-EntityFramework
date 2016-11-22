@@ -180,6 +180,8 @@
     <Content Include="scripts\i18n\defaults-en_US.min.js" />
     <Content Include="scripts\i18n\defaults-es_CL.js" />
     <Content Include="scripts\i18n\defaults-es_CL.min.js" />
+    <Content Include="scripts\i18n\defaults-es_ES.js" />
+    <Content Include="scripts\i18n\defaults-es_ES.min.js" />
     <Content Include="scripts\i18n\defaults-eu.js" />
     <Content Include="scripts\i18n\defaults-eu.min.js" />
     <Content Include="scripts\i18n\defaults-fa_IR.js" />
@@ -281,6 +283,7 @@
       <DependentUpon>Banco.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\AlunoRepository.cs" />
     <Compile Include="Repositories\GenericRepository.cs" />
     <Compile Include="Repositories\IProfessorRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />

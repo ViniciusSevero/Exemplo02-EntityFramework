@@ -34,13 +34,14 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult Listar()
+        public ActionResult Listar(String msg)
         {
 
             AlunoViewModel viewModel = new AlunoViewModel()
             {
                 Alunos = _unit.AlunoRepository.Listar(),
-                Grupos = carregarGrupos()
+                Grupos = carregarGrupos(),
+                Mensagem = msg
             };
 
 
@@ -50,7 +51,7 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult Alterar(int id)
+        public ActionResult Alterar(int id,string msg)
         {
 
             Aluno a = _unit.AlunoRepository.BuscarPorId(id);
@@ -71,6 +72,7 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
                 Nome = a.Nome,
                 ProfessoresId = ProfessoresId,
 
+                Mensagem = msg,
 
                 Grupos = carregarGrupos(),
                 Professores = carregarProfessores()
@@ -139,27 +141,42 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
 
 
         [HttpPost]
-        public ActionResult Excluir(int id)
+        public ActionResult Excluir(AlunoViewModel viewModel)
         {
-            _unit.AlunoRepository.Remover(id);
+            _unit.AlunoRepository.Remover(viewModel.Id);
             _unit.Save();
-            TempData["msg"] = "Aluno excluído com sucesso";
-            return RedirectToAction("Listar");
+            return RedirectToAction("Listar", new { msg = "Aluno excluído com sucesso" });
         }
 
 
 
         [HttpPost]
-        public ActionResult Alterar(Aluno a)
+        public ActionResult Alterar(AlunoViewModel alunoViewModel)
         {
-            //SelectList
-            List<Grupo> grupos = (List<Grupo>)_unit.GrupoRepository.Listar();
-            ViewBag.grupos = new SelectList(grupos, "Id", "Nome");
+            Aluno a = new Aluno()
+            {
+                Bolsa = alunoViewModel.Bolsa,
+                DataNascimento = alunoViewModel.DataNascimento,
+                Desconto = alunoViewModel.Desconto,
+                GrupoId = alunoViewModel.GrupoId,
+                Id = alunoViewModel.Id,
+                Nome = alunoViewModel.Nome
+            };
+
+            //só para garantir
+            a.Professor.Clear();
+
+            //adiciona professores
+            foreach (var id in alunoViewModel.ProfessoresId)
+            {
+                Professor prof = _unit.ProfessorRepository.BuscarPorId(id);
+                a.Professor.Add(prof);
+            }
 
             _unit.AlunoRepository.Atualizar(a);
             _unit.Save();
-            ViewBag.msg = "Alterado com sucesso";
-            return View(a);
+
+            return RedirectToAction("Alterar", new { id = a.Id, msg = "Cadastro alterado com suceso"});
         }
 
         #endregion

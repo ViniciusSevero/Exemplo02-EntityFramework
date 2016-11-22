@@ -44,7 +44,7 @@ namespace Fiap.Exemplo02.MVC.Web.UnitsOfWork
             get {
                 if(_alunoRepository == null)
                 {
-                    _alunoRepository = new GenericRepository<Aluno>(_context);
+                    _alunoRepository = new AlunoRepository(_context);
                 }
                 return _alunoRepository;
             }

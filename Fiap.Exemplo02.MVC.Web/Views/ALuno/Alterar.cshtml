@@ -5,6 +5,24 @@
     ViewBag.Title = "Alterar";
 }
 
+@{
+    List<string> options = new List<string>();
+    foreach (var p in Model.Professores)
+    {
+        foreach (var id in Model.ProfessoresId)
+        {
+            if (p.Id == id)
+            {
+                options.Add("<option selected value=\"" + p.Id + "\">" + p.Nome + "</option>");
+                goto endForeach;
+            }
+        }
+        options.Add("<option value=\"" + p.Id + "\">" + p.Nome + "</option>");
+    endForeach: { };
+    }
+
+}
+
 <h2>Cadastrar Aluno</h2>
 
 @if (Model.Mensagem != null)
@@ -49,10 +67,10 @@
             <div class="form-group">
                 @Html.LabelFor(m => m.Professores)
                 <select name="ProfessoresId" class="selectpicker" multiple>
-                    @foreach (var p in Model.Professores)
-                    {
-                        <option value="@p.Id">@p.Nome</option>
-                    }
+                   @foreach(var s in options)
+                   {
+                       @Html.Raw(s);
+                   }
                 </select>
             </div>
         </div>
@@ -75,5 +93,4 @@
     </div>
 
     <input type="submit" value="Atualizar" class="btn btn-primary" />
-}
-
+                                        }
