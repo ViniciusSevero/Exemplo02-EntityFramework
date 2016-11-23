@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Fiap.Exemplo02.MVC.Web.Models;
 using System.Data.Entity;
 using Fiap.Exemplo02.MVC.Web.UnitsOfWork;
 using Fiap.Exemplo02.MVC.Web.ViewModels;
@@ -209,6 +208,16 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
         {
             List<Professor> lista = (List<Professor>)_unit.ProfessorRepository.Listar();
             return lista;
+        }
+
+        #endregion
+
+        #region AJAX
+
+        public ActionResult VerificarNome(string nome)
+        {
+            bool jaExiste = _unit.AlunoRepository.BuscarPor(c => c.Nome == nome).Any();
+            return Json(new { existe = jaExiste }, JsonRequestBehavior.AllowGet);
         }
 
         #endregion

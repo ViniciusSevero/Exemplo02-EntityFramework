@@ -42,7 +42,7 @@
             <div class="form-group">
                 @Html.LabelFor(m => m.GrupoId)
                 <!-- Primeira propriedade é onde ele vai setar o valor escolhido-->
-                @Html.DropDownListFor(m => m.GrupoId, Model.Grupos ,"Selecione", new { @class = "form-control" })
+                @Html.DropDownListFor(m => m.GrupoId, Model.Grupos, "Selecione", new { @class = "form-control" })
             </div>
         </div>
     </div>
@@ -78,6 +78,31 @@
         </div>
     </div>
 
-            <input type="submit" value="Enviar" class="btn btn-primary" />
+    <input type="submit" value="Enviar" class="btn btn-primary" />
+}
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#Nome").focusout(function () {
+                $.ajax({
+                    url: "http://localhost:64015/Aluno/VerificarNome",
+                    type: "GET",
+                    data: { "nome": $("#Nome").val() },
+                    success: function (data) {
+                        if (data.existe) {
+                            $("#Nome").parent().parent().addClass("has-error");
+                            $("#Nome").focus();
+                            $("#Nome").parent().find(".field-validation-valid").text("Nome já existe");
+                        } else {
+                            $("#Nome").parent().parent().removeClass("has-error");
+                            $("#Nome").parent().find(".field-validation-valid").text("");
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 }
 
