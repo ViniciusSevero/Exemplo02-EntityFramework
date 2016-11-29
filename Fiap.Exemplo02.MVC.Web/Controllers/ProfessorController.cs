@@ -1,4 +1,4 @@
-﻿using Fiap.Exemplo02.MVC.Web.Models;
+﻿using Fiap.Exemplo02.Dominio.Models;
 using Fiap.Exemplo02.MVC.Web.UnitsOfWork;
 using System;
 using System.Collections.Generic;

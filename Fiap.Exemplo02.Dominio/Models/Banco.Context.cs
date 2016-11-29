@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Fiap.Exemplo02.MVC.Web.Models
+namespace Fiap.Exemplo02.Dominio.Models
 {
     using System;
     using System.Data.Entity;
