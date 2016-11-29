@@ -26,6 +26,7 @@ namespace Fiap.Exemplo02.MVC.Web.Models
         public bool Bolsa { get; set; }
         public Nullable<double> Desconto { get; set; }
         public int GrupoId { get; set; }
+        public string Cep { get; set; }
     
         public virtual Grupo Grupo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

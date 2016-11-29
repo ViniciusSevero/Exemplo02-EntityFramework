@@ -72,6 +72,7 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
                 GrupoId = a.GrupoId,
                 Nome = a.Nome,
                 ProfessoresId = ProfessoresId,
+                Cep = a.Cep,
 
                 Mensagem = msg,
 
@@ -116,7 +117,8 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
                     DataNascimento = alunoViewModel.DataNascimento,
                     Bolsa = alunoViewModel.Bolsa,
                     GrupoId = alunoViewModel.GrupoId,
-                    Desconto = alunoViewModel.Desconto
+                    Desconto = alunoViewModel.Desconto,
+                    Cep = alunoViewModel.Cep
                 };
 
                 foreach (var id in alunoViewModel.ProfessoresId)
@@ -160,7 +162,8 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
                 Desconto = alunoViewModel.Desconto,
                 GrupoId = alunoViewModel.GrupoId,
                 Id = alunoViewModel.Id,
-                Nome = alunoViewModel.Nome
+                Nome = alunoViewModel.Nome,
+                Cep = alunoViewModel.Cep
             };
 
             //só para garantir

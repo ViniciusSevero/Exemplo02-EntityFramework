@@ -77,6 +77,47 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Cep)
+                @Html.TextBoxFor(m => m.Cep, new { @class = "form-control" }) <!--qualquer atributo do html, (arroba) é escape-->
+                @Html.ValidationMessageFor(m => m.Cep)
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.Label("Estado")
+                @Html.TextBox("Estado", null, new { @class = "form-control" ,disabled = "disabled" }) <!--qualquer atributo do html, (arroba) é escape-->
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.Label("Cidade")
+                @Html.TextBox("Cidade", null, new { @class = "form-control", disabled = "disabled" }) <!--qualquer atributo do html, (arroba) é escape-->
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.Label("Bairro")
+                @Html.TextBox("Bairro", null, new { @class = "form-control", disabled = "disabled" }) <!--qualquer atributo do html, (arroba) é escape-->
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.Label("Logradouro")
+                @Html.TextBox("Logradouro",null, new { @class = "form-control", disabled = "disabled" }) <!--qualquer atributo do html, (arroba) é escape-->
+            </div>
+        </div>
+    </div>
 
     <input type="submit" value="Enviar" class="btn btn-primary" />
 }
@@ -99,6 +140,25 @@
                             $("#Nome").parent().parent().removeClass("has-error");
                             $("#Nome").parent().find(".field-validation-valid").text("");
                         }
+                    }
+                });
+            });
+
+            $("#Cep").focusout(function () {
+                $.ajax({
+                    url: "http://api.postmon.com.br/v1/cep/"+$(this).val(),
+                    type: "GET",
+                    success: function (data) {
+                        $("#Cep").parent().parent().removeClass("has-error");
+                        $("#Cep").parent().find(".field-validation-valid").text("");
+                        $("#Estado").val(data.estado);
+                        $("#Cidade").val(data.cidade);
+                        $("#Bairro").val(data.bairro);
+                        $("#Logradouro").val(data.logradouro);
+                    },
+                    error: function (data) {
+                        $("#Cep").parent().parent().addClass("has-error");
+                        $("#Cep").parent().find(".field-validation-valid").text("CEP inexistente ou inválido!");
                     }
                 });
             });

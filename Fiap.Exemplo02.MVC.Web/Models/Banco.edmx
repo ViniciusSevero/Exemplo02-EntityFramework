@@ -21,6 +21,7 @@
           <Property Name="Bolsa" Type="bit" Nullable="false" />
           <Property Name="Desconto" Type="float" />
           <Property Name="GrupoId" Type="int" Nullable="false" />
+          <Property Name="Cep" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="Grupo">
           <Key>
@@ -145,6 +146,7 @@
           <Property Name="GrupoId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Grupo" Relationship="Fiap.Exemplo02.Database.Model.FK_Aluno_Grupo" FromRole="Aluno" ToRole="Grupo" />
           <NavigationProperty Name="Professor" Relationship="Fiap.Exemplo02.Database.Model.ProfessorAluno" FromRole="Aluno" ToRole="Professor" />
+          <Property Name="Cep" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityContainer Name="PortalContext" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Aluno" EntityType="Self.Aluno" />
@@ -239,6 +241,7 @@
           <EntitySetMapping Name="Aluno">
             <EntityTypeMapping TypeName="Fiap.Exemplo02.Database.Model.Aluno">
               <MappingFragment StoreEntitySet="Aluno">
+                <ScalarProperty Name="Cep" ColumnName="Cep" />
                 <ScalarProperty Name="GrupoId" ColumnName="GrupoId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Nome" ColumnName="Nome" />

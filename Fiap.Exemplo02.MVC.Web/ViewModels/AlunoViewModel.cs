@@ -35,6 +35,7 @@ namespace Fiap.Exemplo02.MVC.Web.ViewModels
         public System.DateTime DataNascimento { get; set; }
         public bool Bolsa { get; set; }
         public Nullable<double> Desconto { get; set; }
+        public string Cep { get; set; }
         [Display(Name = "Grupo")]
         public int GrupoId { get; set; }
         //não preciso da propriedade de navegação só o ID
