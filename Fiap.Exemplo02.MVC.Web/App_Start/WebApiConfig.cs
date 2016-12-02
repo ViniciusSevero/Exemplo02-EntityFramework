@@ -12,7 +12,7 @@ namespace Fiap.Exemplo02.Service
             // Web API configuration and services
             GlobalConfiguration.Configuration.Formatters.Remove(GlobalConfiguration.Configuration.Formatters.XmlFormatter);
             config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-
+            config.EnableCors();
 
             // Web API routes
             config.MapHttpAttributeRoutes();

@@ -6,9 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace Fiap.Exemplo02.Service.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class AlunoController : ApiController
     {
         private UnitOfWork _unit = new UnitOfWork();
