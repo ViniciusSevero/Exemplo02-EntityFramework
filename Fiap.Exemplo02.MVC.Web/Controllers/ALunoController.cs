@@ -128,7 +128,17 @@ namespace Fiap.Exemplo02.MVC.Web.Controllers
                 }
 
                 _unit.AlunoRepository.Cadastrar(aluno);
-                _unit.Save();
+                try
+                {
+                    _unit.Save();
+                }catch(Exception e)
+                {
+                    alunoViewModel.Mensagem = "Erro - " + e.Message;
+                    alunoViewModel.Grupos = carregarGrupos();
+                    alunoViewModel.Professores = carregarProfessores();
+                    return View(alunoViewModel);
+                }
+                
 
                 return RedirectToAction("Cadastrar", new { msg = "Aluno cadastrado" });
             }

@@ -308,6 +308,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AlunoController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\GrupoController.cs" />
     <Compile Include="Controllers\ProfessorController.cs" />
     <Compile Include="Global.asax.cs">
@@ -335,6 +336,8 @@
     <Content Include="Views\Professor\Cadastrar.cshtml" />
     <Content Include="Views\Professor\Listar.cshtml" />
     <Content Include="Views\ALuno\_tabela.cshtml" />
+    <Content Include="Views\Error\Default.cshtml" />
+    <Content Include="Views\Error\Erro404.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -344,6 +347,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Erro\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
