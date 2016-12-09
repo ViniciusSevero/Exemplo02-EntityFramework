@@ -10,6 +10,7 @@ using Fiap.Exemplo02.MVC.Web.ViewModels;
 
 namespace Fiap.Exemplo02.MVC.Web.Controllers
 {
+    [Authorize]
     public class AlunoController : Controller
     {
         //private PortalContext ctx = new PortalContext();

@@ -1,0 +1,31 @@
+﻿@model Fiap.Exemplo02.MVC.Web.ViewModels.UsuarioViewModel
+
+@{
+    ViewBag.Title = "LogIn";
+}
+
+<h2>LogIn</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(m => m.ReturnUrl)
+
+    <div class="row">
+        <div class="col-lg-12">
+            @Html.LabelFor(m => m.Email)
+            @Html.TextBoxFor(m => m.Email)
+            @Html.ValidationMessageFor(m => m.Email)
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            @Html.LabelFor(m => m.Password)
+            @Html.TextBoxFor(m => m.Password)
+            @Html.ValidationMessageFor(m => m.Password)
+        </div>
+    </div>
+
+    <input type="submit" class="btn btn-primary" value="Logar" />
+}
